@@ -37,8 +37,11 @@ public class Capture : MonoBehaviour
             }
             else
             {
+#if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
-                //Application.Quit();
+#else
+                Application.Quit();
+#endif
                 return;
             }
         }

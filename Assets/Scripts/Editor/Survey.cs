@@ -40,7 +40,7 @@ public class Survey : MonoBehaviour
             if (currentExperiment == null)
             {
                 Debug.LogError("currentExperiment is null!");
-                UnityEditor.EditorApplication.isPlaying = false;
+                EditorApplication.isPlaying = false;
                 return;
             }
             StartExperiment();
@@ -73,7 +73,7 @@ public class Survey : MonoBehaviour
         {
             Debug.Log("Done!");
 
-            UnityEditor.EditorApplication.isPlaying = false;
+            EditorApplication.isPlaying = false;
             //Application.Quit();
         }
     }
@@ -124,7 +124,7 @@ public class Survey : MonoBehaviour
             }
             else
             {
-                UnityEditor.EditorApplication.isPlaying = false;
+                EditorApplication.isPlaying = false;
             }
         }
 

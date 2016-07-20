@@ -11,9 +11,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
 
-public struct SimulationKeyframe
+public class SimulationKeyframe
 {
     public int vehicleID;
     public Vector3 position;
@@ -56,7 +55,9 @@ public class TrafficIO
         // Add first frame offset (always 0)
         frameOffsets.Add(0);
 
+#if UNITY_EDITOR
         string msg = "Loading " + Path.GetFileName(path) + " : ";
+#endif
 
         using (StreamReader reader = new StreamReader(File.OpenRead(path)))
         {
@@ -99,12 +100,14 @@ public class TrafficIO
                 float newPercentLoaded = dataRead / reader.BaseStream.Length;
                 if (newPercentLoaded > percentLoaded)
                 {
-                    if (EditorUtility.DisplayCancelableProgressBar("Traffic Data", msg + (int)(newPercentLoaded * 100) + " %", newPercentLoaded))
+#if UNITY_EDITOR
+                    if (UnityEditor.EditorUtility.DisplayCancelableProgressBar("Traffic Data", msg + (int)(newPercentLoaded * 100) + " %", newPercentLoaded))
                     {
-                        EditorUtility.ClearProgressBar();
-                        EditorApplication.isPlaying = false;
+                        UnityEditor.EditorUtility.ClearProgressBar();
+                        UnityEditor.EditorApplication.isPlaying = false;
                         return null;
                     }
+#endif
                     percentLoaded = newPercentLoaded + 0.05f;
                 }
 
@@ -159,7 +162,9 @@ public class TrafficIO
             }
         }
 
-        EditorUtility.ClearProgressBar();
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.ClearProgressBar();
+#endif
 
         // Add last frame offset (always the number of keyframes)
         frameOffsets.Add(keyframes.Count);
