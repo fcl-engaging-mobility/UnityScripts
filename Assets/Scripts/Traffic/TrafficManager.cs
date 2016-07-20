@@ -41,6 +41,14 @@ public class CustomAssetReplacement
     public GameObject[] prefabs;
 }
 
+[Serializable]
+public class HeatmapPass
+{
+    public bool include;
+    public AssetType[] assetTypes;
+}
+
+
 public class TrafficManager : MonoBehaviour
 {
     private static readonly uint INTERVAL = 250;
@@ -63,8 +71,11 @@ public class TrafficManager : MonoBehaviour
 
     [Header("Heat Map")]
     public bool generateOnStart = false;
-    public int heatmapResolution = 2048;
+    public int heatmapResolution = 4096;
+    public float pointRadius = 2f;
+    public bool logarithmic = false;
     public OcclusionArea bounds;
+    public HeatmapPass[] heatmapPasses;
 
     public int CurrentObjectCount
     {
@@ -311,7 +322,17 @@ public class TrafficManager : MonoBehaviour
     void GenerateHeatMap()
     {
         Bounds aabb = new Bounds(bounds.center, bounds.size);
-        Heatmap.GenerateHeatmap(data.keyframes, heatmapResolution, aabb, name + "-Heatmap.png");
+        if (heatmapPasses == null || heatmapPasses.Length == 0)
+        {
+            Heatmap.GenerateHeatmap(data, heatmapResolution, pointRadius, aabb, logarithmic, name + "-Heatmap");
+        }
+        else
+        {
+            for (int i = 0; i < heatmapPasses.Length; i++)
+            {
+                Heatmap.GenerateHeatmap(data, heatmapResolution, pointRadius, aabb, logarithmic, name + "-Heatmap" + (i + 1), heatmapPasses[i].assetTypes, heatmapPasses[i].include);
+            }
+        }
     }
 
 }
