@@ -21,10 +21,14 @@ public class Vehicle2Wheels : SimulationVehicle
     private AudioSource audioSource;
 
     private static readonly float LoopLength = 0.4f;
+    private static readonly int SpeedId = Animator.StringToHash("Speed");
     //private float leaning = 0;
+
+    private Animator animator;
 
     void OnEnable()
     {
+        animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
     }
 
@@ -63,11 +67,24 @@ public class Vehicle2Wheels : SimulationVehicle
     //    targetRotation.eulerAngles = euler;
     //}
 
+    protected override void UpdateMovement()
+    {
+        base.UpdateMovement();
+
+        if (animator)
+        {
+            // Update the animator parameters
+            float forwardAmount = targetSpeed * 0.2f;
+            animator.SetFloat(SpeedId, forwardAmount);
+            //animator.SetFloat("Turn", turnAmount, 0.1f, Time.deltaTime);
+        }
+    }
+
     public override void SetSpeed(float speed)
     {
         base.SetSpeed(speed);
 
-        if (audioSource.clip == breakingSound)
+        if (audioSource && audioSource.clip == breakingSound)
         {
             UpdateBrakeSound();
         }
@@ -75,21 +92,26 @@ public class Vehicle2Wheels : SimulationVehicle
 
     protected override void OnMovementTypeChanged()
     {
-        switch (movementType)
+        base.OnMovementTypeChanged();
+
+        if (audioSource)
         {
-            case MovementType.Accelerating:
-                audioSource.clip = movingSound;
-                audioSource.time = 0;
-                audioSource.Play();
-                break;
-            case MovementType.Decelerating:
-                audioSource.clip = breakingSound;
-                UpdateBrakeSound();
-                audioSource.Play();
-                break;
-            case MovementType.Idle:
-                audioSource.Stop();
-                break;
+            switch (movementType)
+            {
+                case MovementType.Accelerating:
+                    audioSource.clip = movingSound;
+                    audioSource.time = 0;
+                    audioSource.Play();
+                    break;
+                case MovementType.Decelerating:
+                    audioSource.clip = breakingSound;
+                    UpdateBrakeSound();
+                    audioSource.Play();
+                    break;
+                case MovementType.Idle:
+                    audioSource.Stop();
+                    break;
+            }
         }
     }
 

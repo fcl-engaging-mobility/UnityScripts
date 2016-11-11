@@ -14,7 +14,8 @@ public class SimulationElement : MonoBehaviour
     [System.Serializable]
     public class MaterialReplacement
     {
-        public Renderer mesh = null;
+        public Renderer[] meshes = new Renderer[0];
+        public bool hideMesh = false;
         public bool includeCurrentMeshMaterial = true;
         public Material[] materials = new Material[0];
     }
@@ -37,18 +38,37 @@ public class SimulationElement : MonoBehaviour
         get { return targetSpeed; }
     }
 
-    void Awake()
+    private int id;
+    public int ID { get { return id; } }
+
+    public void Initialize(int id)
     {
+        this.id = id;
+
         if (materialReplacements.Length > 0)
         {
             foreach (var replacement in materialReplacements)
             {
-                if (replacement.mesh != null && replacement.materials.Length > 0)
+                if (replacement.meshes != null)
                 {
-                    int index = random.Next(replacement.includeCurrentMeshMaterial ? -1 : 0, replacement.materials.Length);
-                    if (index >= 0)
+                    bool hideMesh = replacement.hideMesh && random.Next(2) == 1;
+                    if (hideMesh)
                     {
-                        replacement.mesh.material = replacement.materials[index];
+                        foreach (var mesh in replacement.meshes)
+                        {
+                            mesh.gameObject.SetActive(false);
+                        }
+                    }
+                    else if (replacement.materials.Length > 0)
+                    {
+                        int index = random.Next(replacement.includeCurrentMeshMaterial ? -1 : 0, replacement.materials.Length);
+                        if (index >= 0)
+                        {
+                            foreach (var mesh in replacement.meshes)
+                            {
+                                mesh.material = replacement.materials[index];
+                            }
+                        }
                     }
                 }
             }
