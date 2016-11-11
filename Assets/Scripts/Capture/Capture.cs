@@ -19,6 +19,9 @@ public class Capture : MonoBehaviour
     public int skipFrameRate = 20;
     public int frameRate = 60;
     public string folderName = "Video1";
+    [Range(1, 4)]
+    public int superSample = 1;
+
     bool recording = false;
 
     void Start()
@@ -37,11 +40,7 @@ public class Capture : MonoBehaviour
             }
             else
             {
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#else
-                Application.Quit();
-#endif
+                Stop();
                 return;
             }
         }
@@ -56,9 +55,26 @@ public class Capture : MonoBehaviour
         }
     }
 
+    private void Stop()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
+    }
+
+
     public void CaptureFrame()
     {
         string name = string.Format("{0}/img{1:D05}.png", folderName, (Time.frameCount - startFrame));
-        Application.CaptureScreenshot(name);
+        if (superSample > 1)
+        {
+            Application.CaptureScreenshot(name, superSample);
+        }
+        else
+        {
+            Application.CaptureScreenshot(name);
+        }
     }
 }

@@ -9,7 +9,6 @@
 
 using UnityEngine;
 using System.Collections;
-using UnityEditor;
 using System.IO;
 
 public class Survey : MonoBehaviour
@@ -40,7 +39,7 @@ public class Survey : MonoBehaviour
             if (currentExperiment == null)
             {
                 Debug.LogError("currentExperiment is null!");
-                EditorApplication.isPlaying = false;
+                Stop();
                 return;
             }
             StartExperiment();
@@ -72,9 +71,7 @@ public class Survey : MonoBehaviour
         if (!experiments.MoveNext())
         {
             Debug.Log("Done!");
-
-            EditorApplication.isPlaying = false;
-            //Application.Quit();
+            Stop();
         }
     }
 
@@ -88,14 +85,18 @@ public class Survey : MonoBehaviour
         {
             if (sFilePath.EndsWith(".fbx"))
             {
+#if UNITY_EDITOR
                 string sAssetPath = sFilePath.Substring(Application.dataPath.Length - 6);
-                GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(sAssetPath);
+                GameObject go = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(sAssetPath);
                 var experiment = Instantiate(go);
 
                 currentExperiment = experiment.transform;
                 StartExperiment();
 
                 yield return experiment;
+#else
+                yield return null;
+#endif
             }
         }
     }
@@ -106,6 +107,15 @@ public class Survey : MonoBehaviour
         offsetCars = SpeedCars * NumberOfFrames;
         offsetCyclists = SpeedCyclists * NumberOfFrames;
         bUpdateVehicles = true;
+    }
+
+    void Stop()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     void UpdateVehicles()
@@ -124,7 +134,8 @@ public class Survey : MonoBehaviour
             }
             else
             {
-                EditorApplication.isPlaying = false;
+                Stop();
+                return;
             }
         }
 

@@ -75,6 +75,8 @@ public class Vehicle4Wheels : SimulationVehicle
 
     protected override void OnMovementTypeChanged()
     {
+        base.OnMovementTypeChanged();
+
         switch (movementType)
         {
             case MovementType.Idle:

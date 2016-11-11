@@ -20,13 +20,17 @@ public class TimeController : MonoBehaviour
 {
     public float time = 0;
     public float timeScale = 1;
+    public bool pulsate = false;
 
     private static WaitForSeconds wait = new WaitForSeconds(0.5f);
     private static List<Pulsator> pulsators = new List<Pulsator>();
 
     void Start()
     {
-        StartCoroutine(Pulsate());
+        if (pulsate)
+        {
+            StartCoroutine(Pulsate());
+        }
     }
 
     void Update()
