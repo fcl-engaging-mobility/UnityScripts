@@ -5,11 +5,13 @@ Unity scripts to visualize CityEngine-generated 3D models combined with VisSim-g
 #### Screenshots
 
 <a  href="Screenshots/1.jpg">
-<img src="Screenshots/1.jpg" height="300" alt="" border="1"/></a>
+<img src="Screenshots/1.jpg" width="430" height="300" alt="" border="1"/></a>
 <a  href="Screenshots/2.jpg">
-<img src="Screenshots/2.jpg" height="300" alt="" border="1"/></a>
+<img src="Screenshots/2.jpg" width="430" height="300" alt="" border="1"/></a>
 <a  href="Screenshots/3.jpg">
-<img src="Screenshots/3.jpg" height="300" alt="" border="1"/></a>
+<img src="Screenshots/3.jpg" width="430" height="300" alt="" border="1"/></a>
+<a  href="Screenshots/BikeSim.png">
+<img src="Screenshots/BikeSim.png" width="430" height="300" alt="" border="1"/></a>
 
 ## Requisites
 
