@@ -1,6 +1,8 @@
 # Unity Scripts
 
-Unity scripts to visualize CityEngine-generated 3D models combined with VisSim-generated traffic and pedestrian simulations.
+Unity scripts for: 
+- Visualize CityEngine-generated 3D models combined with VisSim-generated traffic and pedestrian simulations
+- Virtual Reality Cycling Simulator using SteamVR 
 
 #### Screenshots
 
@@ -17,7 +19,7 @@ Unity scripts to visualize CityEngine-generated 3D models combined with VisSim-g
 
 Hardware:
 
-* DirectX 11 or OpenGL Core capabable GPU
+* DirectX 11 and .Net 2.0 full
 
 Software:
 
@@ -34,6 +36,7 @@ Before running it, you'll need to set the correct path to the simulation data fi
 
 * Create a new game object and add a **TrafficManager** component to it
 * Go to the **Inspector** window and change the value of **Data File**
+
 
 ## Contact
 
