@@ -42,6 +42,7 @@ Before running it, you'll need to set the correct path to the simulation data fi
 
 * **Alex Erath**: alexander.erath@ivt.baug.ethz.ch
 * **Michael Joos**: joos@arch.ethz.ch
+* **Filip Schramka**: filip.schramka@fhnw.ch
 
 ## License
 
