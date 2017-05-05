@@ -12,8 +12,15 @@ using UnityEngine;
 
 public class FlatCamera : MonoBehaviour
 {
-	void LateUpdate()
+    Vector3 initial;
+
+    void OnEnable()
+    {
+        initial = transform.localPosition;
+    }
+    void LateUpdate()
     {
         transform.rotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
+        transform.position = transform.parent.position + Quaternion.Euler(transform.parent.eulerAngles.x, transform.parent.eulerAngles.y, 0f) * initial;
     }
 }
